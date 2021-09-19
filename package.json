@@ -1,0 +1,34 @@
+{
+  "name": "telegram-rss-bot",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Self-hosted solution to read your RSS feeds through your own Telegram channel.",
+  "homepage": "https://github.com/kutsan/telegram-rss-bot",
+  "repository": "github:kutsan/telegram-rss-bot",
+  "license": "GPL-3.0",
+  "author": "Kutsan Kaplan <me@kutsankaplan.com> (https://kutsankaplan.com)",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/index.js",
+    "prebuild": "npm run lint",
+    "build": "tsc src",
+    "format": "",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "cron": "^1.8.2",
+    "dotenv": "^10.0.0",
+    "node-fetch": "^3.0.0",
+    "rss-parser": "^3.12.0",
+    "sqlite3": "^5.0.2",
+    "typescript": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/cron": "^1.7.3",
+    "@types/node": "^16.9.3",
+    "@types/sqlite3": "^3.1.7",
+    "@types/xml2js": "^0.4.9",
+    "prettier": "^2.4.1",
+    "ts-node": "^10.2.1"
+  }
+}
