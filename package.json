@@ -9,16 +9,18 @@
   "author": "Kutsan Kaplan <me@kutsankaplan.com> (https://kutsankaplan.com)",
   "type": "module",
   "scripts": {
-    "start": "node dist/index.js",
+    "dev": "node --experimental-specifier-resolution=node --loader ts-node/esm ./src/index.ts",
+    "start": "node --experimental-specifier-resolution=node dist/index.js",
     "prebuild": "npm run lint",
-    "build": "tsc src",
+    "build": "tsc",
     "format": "",
-    "lint": "eslint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "better-sqlite3": "^7.4.5",
     "cron": "^1.8.2",
     "dotenv": "^10.0.0",
+    "limiter": "^2.0.1",
     "node-fetch": "^3.1.0",
     "rss-parser": "^3.12.0",
     "typescript": "^4.5.2"
@@ -28,6 +30,10 @@
     "@types/cron": "^1.7.3",
     "@types/node": "^16.11.9",
     "@types/xml2js": "^0.4.9",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-config-standard-with-typescript": "^21.0.1",
     "prettier": "^2.4.1",
     "ts-node": "^10.4.0"
   }
