@@ -15,14 +15,14 @@ const databaseFileName = 'cache.db'
 
 const userHome = os.homedir()
 const xdgDataHome =
-  process.env.XDG_DATA_HOME || path.join(userHome, '.local', 'share')
+  process.env.XDG_DATA_HOME ?? path.join(userHome, '.local', 'share')
 const xdgConfigHome =
-  process.env.XDG_CONFIG_HOME || path.join(userHome, '.config')
+  process.env.XDG_CONFIG_HOME ?? path.join(userHome, '.config')
 
 const programDataHome = path.join(xdgDataHome, programFolderName)
 const programConfigHome = path.join(xdgConfigHome, programFolderName)
 
-export const makeDataFolders = () => {
+export const makeDataFolders = (): void => {
   if (!fs.existsSync(programDataHome)) {
     fs.mkdirSync(programDataHome, { recursive: true })
   }
@@ -42,7 +42,7 @@ export const getUrls = (): string[] => {
     .filter((url) => url)
 }
 
-export const validateConfig = () => {
+export const validateConfig = (): void => {
   if (!fs.existsSync(urlsPath)) {
     console.log(`${urlsPath} file is not found.`)
     process.exit(1)
