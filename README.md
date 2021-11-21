@@ -1,6 +1,12 @@
 # `telegram-rss-bot`
 
-WIP
+## Usage
+
+```sh
+npm install
+npm run build
+npm start
+```
 
 ## License
 
