@@ -1,29 +1,25 @@
-// TODO: pino
-
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import { CronJob } from 'cron'
 
-import { fetchFeeds } from './feed'
-import { initializeDatabase, clearOutdatesCaches } from './database'
+import { initializeDatabase } from './database'
 import {
   validateConfig,
   makeDataFolders,
   fetchCronExpression,
   clearOutdatedCronExpression
 } from './config'
+import { fetchJob, clearOutdatedCachesJob } from './cron'
 
-dotenv.config()
-
-initializeDatabase()
+await initializeDatabase()
 makeDataFolders()
 validateConfig()
 
-const fetchJob = new CronJob(fetchCronExpression, () => {
-  fetchFeeds
+const fetchCronJob = new CronJob(fetchCronExpression, () => {
+  fetchJob().catch(console.error)
 })
-fetchJob.start()
+fetchCronJob.start()
 
-const clearOutdatedJob = new CronJob(clearOutdatedCronExpression, () => {
-  clearOutdatesCaches
+const clearOutdatedCronJob = new CronJob(clearOutdatedCronExpression, () => {
+  clearOutdatedCachesJob().catch(console.error)
 })
-clearOutdatedJob.start()
+clearOutdatedCronJob.start()

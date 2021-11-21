@@ -1,28 +1,52 @@
-import sqlite3 from 'sqlite3' // TODO: better-sqlite3
+import Database from 'better-sqlite3'
 
-import { databasePath } from './config'
+import { fetchNewFeeds } from './feed'
+import { databasePath, getUrls } from './config'
 
-const db = new sqlite3.Database(databasePath)
+const db = new Database(databasePath)
 
-export const initializeDatabase = () => {
-  db.serialize(() => {
-    db.run(
-      'CREATE TABLE IF NOT EXISTS rss_items (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT NOT NULL)'
-    )
-
-    db.get('SELECT * FROM rss_items', (_, row) => {
-      if (row === undefined) {
-        // TODO: Initialize cache database.
-      }
-    })
-  })
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const getAllFeeds = () => {
+  return db.prepare('SELECT * FROM rss_items').all()
 }
 
-export const cacheUrl = (url: string): void => {
-  db.prepare('INSERT INTO rss_items (url) VALUES (?)')
+export const initializeDatabase = async (): Promise<void> => {
+  db.prepare(
+    'CREATE TABLE IF NOT EXISTS rss_items (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT NOT NULL)'
+  ).run()
+
+  const rssItems = getAllFeeds()
+
+  if (rssItems.length === 0) {
+    const urls = getUrls()
+    const newFeeds = await fetchNewFeeds({ urls })
+
+    cacheUrls(newFeeds.map(({ link }) => link))
+  }
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const cacheUrls = (urls: string[]) => {
+  const insertUrl = db.prepare('INSERT INTO rss_items (url) VALUES (?)')
+
+  return db.transaction((links) => {
+    for (const link of links) {
+      insertUrl.run(link)
+    }
+  })(urls)
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const cacheUrl = (url: string) => {
+  return db.prepare('INSERT INTO rss_items (url) VALUES (?)').run(url)
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const getUrl = (url: string): void => {
-  db.prepare('SELECT * FROM rss_items WHERE url = ?')
+  return db.prepare('SELECT * FROM rss_items WHERE url = ?').get(url)
 }
 
-export const clearOutdatesCaches = () => {}
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const removeUrlById = (id: string[]) => {
+  return db.prepare('DELETE FROM rss_items WHERE id = ?').run(id)
+}
