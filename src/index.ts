@@ -10,7 +10,11 @@ import {
 } from './config'
 import { fetchJob, clearOutdatedCachesJob } from './cron'
 
-await initializeDatabase()
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+;(async () => {
+  await initializeDatabase()
+})()
+
 makeDataFolders()
 validateConfig()
 
