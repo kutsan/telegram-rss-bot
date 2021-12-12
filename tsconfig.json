@@ -8,6 +8,7 @@
     "module": "ESNext",
     "esModuleInterop": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "removeComments": true
   }
 }
