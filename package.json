@@ -13,8 +13,8 @@
     "start": "node --experimental-specifier-resolution=node dist/index.js",
     "prebuild": "npm run lint",
     "build": "tsc",
-    "format": "",
-    "lint": "eslint ."
+    "format": "prettier --write '**/*.{js,ts,tsx,json,md,css}' --list-different",
+    "lint": "eslint --ignore-path .gitignore ."
   },
   "dependencies": {
     "better-sqlite3": "^7.4.5",
